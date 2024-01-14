@@ -5,6 +5,8 @@ on:
 
 jobs:
   test-and-build:
+    env:
+      FLAGSMITH_KEY: ${{ secrets.FLAGSMITH_KEY }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
