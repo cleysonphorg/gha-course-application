@@ -58,7 +58,6 @@ jobs:
           path: playwright-report/
 
       - name: Send a Slack Message on Failure
-        id: slack
         uses: slackapi/slack-github-action@v1.24.0
         if: failure()
         with:
@@ -68,8 +67,8 @@ jobs:
                 {
                   "type": "section",
                   "text": {
-                    "type": "markdown",
-                    "text": "🔴 *<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|${{github.workflow}} workflow run>* failed"
+                    "type": "mrkdwn",
+                    "text": "🛑 *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|${{ github.workflow }} workflow run>* failed."
                   }
                 }
               ]
