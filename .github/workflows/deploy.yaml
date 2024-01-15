@@ -64,6 +64,8 @@ jobs:
 
       - name: Build App
         run: npm run build
+        env:
+          FLAGSMITH_KEY: ${{ secrets.FLAGSMITH_KEY }}
 
       - name: Cache EB CLI
         uses: actions/cache@v3
