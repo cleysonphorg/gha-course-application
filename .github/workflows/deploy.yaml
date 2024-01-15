@@ -78,10 +78,10 @@ jobs:
 
       - name: Get AWS ENV Name
         id: get-env-name
-        run: echo "aws_env=$(aws elasticbeanstalk describe-environments gha-course --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].EnvironmentName" --output text)" >> $GITHUB_OUTPUT
+        run: echo "aws_env=$(aws elasticbeanstalk describe-environments --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].EnvironmentName" --output text)" >> $GITHUB_OUTPUT
       - name: Get AWS ENV Status
         id: get-env-status
-        run: echo "aws_env_status=$(aws elasticbeanstalk describe-environments gha-course --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].Status" --output text)" >> $GITHUB_OUTPUT
+        run: echo "aws_env_status=$(aws elasticbeanstalk describe-environments --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].Status" --output text)" >> $GITHUB_OUTPUT
       - name: Initialize EB
         run: eb init ${{ vars.AWS_EB_APP_NAME }} --platform "${{ vars.AWS_EB_PLATFORM }}" --region ${{ vars.AWS_REGION }}
       - name: Create a New Environment
@@ -92,7 +92,7 @@ jobs:
         run: eb deploy ${{ inputs.aws-env }}
       - name: Get AWS ENV Status
         id: get-env-cname
-        run: echo "aws_env_cname=$(aws elasticbeanstalk describe-environments gha-course --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].CNAME" --output text)" >> $GITHUB_OUTPUT
+        run: echo "aws_env_cname=$(aws elasticbeanstalk describe-environments --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].CNAME" --output text)" >> $GITHUB_OUTPUT
 
       - name: Notify on Slack
         uses: slackapi/slack-github-action@v1.24.0
@@ -105,7 +105,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "🚀 Deployement to AWS Environment *${{ inputs.aws-env }}* using *${{ inputs.github-env }}* Github Environment was successful. <http://${{ steps.get-env-cname.outputs.aws_env_cname }}|View Deployment>"
+                    "text": "🚀 Deployment to AWS environment *${{inputs.aws-env}}* using *${{ inputs.github-env }}* GitHub wnvironment  was successfull. <http://${{ steps.get-env-cname.outputs.aws_env_cname }}|View Deployment>"
                   }
                 }
               ]
