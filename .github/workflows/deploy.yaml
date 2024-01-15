@@ -48,7 +48,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -81,7 +81,7 @@ jobs:
         id: get-env-status
         run: echo "aws_env_status=$(aws elasticbeanstalk describe-environments gha-course --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].Status" --output text)" >> $GITHUB_OUTPUT
       - name: Initialize EB
-        run: eb init ${{ vars.AWS_EB_APP_NAME }} --plarform ${{ vars.AWS_EB_PLATFORM }} --region ${{ secrets.AWS_REGION }}
+        run: eb init ${{ vars.AWS_EB_APP_NAME }} --plarform "${{ vars.AWS_EB_PLATFORM }}" --region ${{ secrets.AWS_REGION }}
       - name: Create a New Environment
         if: steps.get-env-name.outputs.aws_env == 'None' || steps.get-env-status.outputs.aws_env_status == 'Terminated'
         run: eb create ${{ inputs.aws-env }} --instance-types ${{ vars.AWS_EB_ENV_INSTANCE_TYPES }} --cname ${{ inputs.aws-env }} --envvars FLAGSMITH_KEY=${{ secrets.FLAGSMITH_KEY }}
